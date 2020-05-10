@@ -1,0 +1,176 @@
+.shadow {
+  @include box-shadow(0 1px 2px 0 rgba(0, 0, 0, 0.2));
+}
+
+@include toolbar-ui($ui: "tools", $padding: 0);
+
+@include treelist-ui(
+  $ui: "navigation",
+  $padding: 0 10px,
+  // Black-ish background color
+    $background-color: $panel-navigation-background-color,
+  $toolstrip-background-color: #32404e,
+  $tool-float-indicator-color: $base-color,
+  $tool-float-indicator-width: 5px,
+  $tool-indicator-selected-color: $base-color,
+  $tool-indicator-selected-width: 5px,
+  $tool-selected-background-color:
+    mix(white, $panel-navigation-background-color, 10%),
+  //$tool-selected-color: #fff,
+    //$tool-selected-background-color: $base-color,
+    // Darker background for expanded subtrees
+    $item-expanded-background-color: #2c3845,
+  // Taller line height
+    $item-line-height: $panel-navigation-item-line-height,
+  $row-over-background-color: mix(white, $panel-navigation-background-color, 5%),
+  $row-selected-background-color:
+    mix(white, $panel-navigation-background-color, 10%),
+  // Off-white text
+    $item-icon-color: $panel-navigation-item-text-color,
+  $item-expander-color: #fff,
+  $item-text-color: #adb3b8,
+  // Brighter when hovered
+    $item-icon-over-color: #fff,
+  $item-expander-over-color: #fff,
+  $item-text-over-color: mix(white, $panel-navigation-item-text-color, 50%),
+  $item-text-font-size: 14px,
+  // Various sizes for the pieces:
+    $item-icon-font-size: 18px,
+  $item-icon-width: 44px,
+  $item-expander-font-size: 16px,
+  $item-expander-width: 24px,
+  // Style the "row indicator" (the vertical stripe on the left edge):
+    $row-indicator-width: 5px,
+  $row-indicator-selected-color: $base-color,
+  $row-indicator-selected-over-color: lighten($base-color, 7%),
+  $row-indicator-over-color: transparent
+);
+
+// .nav-tree-badge:after {
+//   position: absolute;
+//   height: 18px;
+//   width: 3.3em;
+//   display: inline-block;
+//   text-align: center;
+//   top: 50%;
+//   margin-top: -9px;
+//   right: 12px;
+//   color: #fff;
+//   font-weight: 600;
+//   font-size: 10px;
+//   line-height: 18px;
+// }
+
+// .nav-tree-badge-hot:after {
+//   content: "HOT";
+//   background-color: #e3495a;
+// }
+
+// .nav-tree-badge-new:after {
+//   content: "NEW";
+//   background-color: $color-soft-blue;
+// }
+
+.pop-out {
+  @include box-shadow(2px 2px 8px 2px #ccc);
+}
+
+.circular {
+  border-radius: 50%;
+}
+
+.x-treelist-navigation {
+  transition: width 0.3s;
+}
+
+.main-nav-container,
+.main-logo {
+  position: relative;
+  transition: width 0.3s;
+  width: $main-nav-width;
+}
+
+.x-treelist-navigation:not(.x-treelist-floater) {
+  min-height: calc(100vh - #{$main-toolbar-height});
+}
+
+a {
+  color: #35baf6;
+  text-decoration: none;
+}
+
+.main-container {
+  background-color: #f6f6f6;
+}
+
+.main-nav-collapsed {
+  width: $main-nav-collapsed-width;
+}
+
+// .main-toolbar {
+//   z-index: 1;
+
+//   & > .x-inner {
+//     padding: 0;
+//   }
+// }
+
+.main-logo,
+.main-toolbar {
+  height: $main-toolbar-height;
+}
+
+.x-big .main-toolbar,
+.main-toolbar {
+  border: none;
+  padding: 0 38px 0 0;
+}
+
+.main-nav-floated {
+  background-color: $panel-navigation-background-color;
+  transition: left 0.3s;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.main-nav-slid-out {
+  left: -$main-nav-width;
+}
+
+$small-image-size: 35px;
+$logo-image-width: 17px;
+$logo-image-height: 26px;
+
+.small-image {
+  width: $small-image-size;
+  height: $small-image-size;
+}
+
+// hide the mask message
+.main-nav-mask > .x-mask-inner {
+  display: none;
+}
+
+.main-logo {
+  background-color: $base-color;
+  height: $main-toolbar-height;
+  line-height: $main-toolbar-height;
+
+  font-size: 16px;
+  color: #fff;
+  padding-left: $main-nav-collapsed-width; // for symmetry
+  position: relative;
+
+  &:before {
+    content: " ";
+    position: absolute;
+    background-size: cover;
+    top: ($main-toolbar-height - $logo-image-height) / 2;
+    left: 22px;
+    // width: $logo-image-width;
+    // height: $logo-image-height;
+    // background: transparent url(images/company-logo.png) no-repeat center center;
+  }
+}

@@ -1,0 +1,30 @@
+$border-color: #ddd;
+
+$panel-header-background-color: dynamic($base-color);
+
+$mask-page-opacity: dynamic($mask-opacity);
+$mask-page-background-color: dynamic($mask-background-color);
+
+//-----------------------------------------
+$base-color: #35baf6;
+$base-border-color: #ddd;
+$lightest-color: #fff;
+$color-soft-blue: #35baf6;
+$panel-navigation-background-color: #32404e;
+$panel-navigation-item-line-height: 64px;
+$panel-navigation-item-text-color: #adb3b8;
+$progress-bar-background-color: #458fd2;
+
+$circle-border-radius: 50%;
+$font-weight-normal: 400;
+$font-weight-bold: 500;
+
+$main-nav-width: 260px;
+$main-nav-collapsed-width: 64px;
+$main-toolbar-height: 65px;
+$main-phone-toolbar-height: 56px;
+
+@mixin list-item-title() {
+  font-weight: 600;
+  line-height: 20px;
+}
