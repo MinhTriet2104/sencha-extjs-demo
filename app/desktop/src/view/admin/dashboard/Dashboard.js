@@ -11,5 +11,7 @@ Ext.define("Demo.view.admin.dashboard.Dashboard", {
 
   scrollable: true,
 
-  title: "Hello World",
+  title: "Dashboard",
+
+  items: [],
 });

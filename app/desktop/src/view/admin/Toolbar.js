@@ -55,7 +55,7 @@ Ext.define("Admin.view.main.Toolbar", {
     },
     {
       xtype: "component",
-      html: "Goff Smith",
+      html: "Minh Triet",
       margin: "0 12 0 4",
       userCls: "main-user-name",
     },
@@ -63,8 +63,7 @@ Ext.define("Admin.view.main.Toolbar", {
       xtype: "image",
       userCls: "main-user-image small-image circular",
       alt: "Current user image",
-      src:
-        "https://phunugioi.com/wp-content/uploads/2020/01/avt-doi-cute-nu.jpg",
+      src: "https://s3.amazonaws.com/uifaces/faces/twitter/xalionmalik/128.jpg",
     },
   ],
 });

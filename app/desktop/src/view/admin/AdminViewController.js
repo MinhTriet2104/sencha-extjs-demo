@@ -58,6 +58,11 @@ Ext.define("Demo.view.admin.AdminViewController", {
 
     const navigationTree = me.navigationTree;
     const store = navigationTree.getStore();
+    const params = hashTag.split("-");
+    if (params[0] == "articles" && params[1]) {
+      hashTag = params[0];
+      console.log(Ext.getStore());
+    }
     const node =
       store.findNode("routeId", hashTag) || store.findNode("viewType", hashTag);
     navigationTree.setSelection(node);
