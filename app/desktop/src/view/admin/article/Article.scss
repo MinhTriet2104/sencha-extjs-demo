@@ -134,3 +134,22 @@ ol {
   padding: 0;
   background-color: transparent;
 }
+
+.nav-menu {
+  position: relative;
+  text-align: center;
+  float: none;
+}
+
+.nav-menu li {
+  float: none;
+  display: inline-block;
+}
+
+.nav-menu li a {
+  display: block;
+  padding: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
