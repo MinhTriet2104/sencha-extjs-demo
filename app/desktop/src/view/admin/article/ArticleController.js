@@ -16,12 +16,71 @@ Ext.define("Demo.view.admin.article.ArticleController", {
     }
   },
 
-  handleClickNav: function (view, index, target, data) {
-    const store = this.getView().getViewModel().getStore("articles");
-    // console.log(url);
-    store.getProxy().url = `https://5eb51225de5849001638b0a7.mockapi.io/api/article/${data.id}/`;
-    store.load();
+  dataviewSelect: function (component, record) {
+    const {
+      id,
+      title,
+      image,
+      date,
+      content,
+      view,
+      category,
+      author,
+    } = record.data;
+    const form = Ext.create({
+      xtype: "show",
+      items: {
+        xtype: "formpanel",
+
+        items: [
+          {
+            label: "Article Title",
+            name: "title",
+            xtype: "textfield",
+            allowBlank: false,
+            value: title,
+          },
+          {
+            label: "Author",
+            name: "author",
+            xtype: "textfield",
+            allowBlank: false,
+            value: author,
+          },
+          {
+            label: "Category",
+            name: "category",
+            xtype: "textfield",
+            allowBlank: false,
+            value: category,
+          },
+          {
+            label: "Date",
+            name: "date",
+            xtype: "datefield",
+            allowBlank: false,
+            value: new Date(date),
+          },
+          {
+            label: "Content",
+            name: "content",
+            xtype: "textareafield",
+            allowBlank: false,
+            grow: true,
+            value: content,
+          },
+        ],
+      },
+    });
+    form.show();
   },
+
+  // handleClickNav: function (view, index, target, data) {
+  //   const store = this.getView().getViewModel().getStore("articles");
+  //   // console.log(url);
+  //   store.getProxy().url = `https://5eb51225de5849001638b0a7.mockapi.io/api/article/${data.id}/`;
+  //   store.load();
+  // },
 
   onCategoryChange: function (node, id) {
     this.setCategoryView(node, id);

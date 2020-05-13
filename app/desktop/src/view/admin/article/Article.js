@@ -41,14 +41,14 @@ Ext.define("Demo.view.admin.article.Article", {
     itemTpl: `
     <div class="container mt-3">
       <div class="post post-row">
-        <a class="post-img" href="#"><img src="{image}" alt="{title}"></a>
+        <a class="post-img"><img src="{image}" alt="{title}"></a>
         <div class="post-body">
           <div class="post-category">
-            <a href="#">{category}</a>
+            <a>{category}</a>
           </div>
-          <h3 class="post-title"><a href="#">Mel ut impetus suscipit tincidunt. Cum id ullum laboramus persequeris.</a></h3>
+          <h3 class="post-title"><a>Mel ut impetus suscipit tincidunt. Cum id ullum laboramus persequeris.</a></h3>
           <ul class="post-meta">
-            <li><a href="#">{author}</a></li>
+            <li><a>{author}</a></li>
             <li>{date:date("F j, Y")}</li>
           </ul>
           <p>{content}</p>
@@ -56,5 +56,8 @@ Ext.define("Demo.view.admin.article.Article", {
       </div>
     </div>
     `,
+    listeners: {
+      select: "dataviewSelect",
+    },
   },
 });
