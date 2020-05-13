@@ -12,6 +12,7 @@ Ext.define("Demo.view.admin.AdminViewController", {
 
   routes: {
     ":node": "onRouteChange",
+    ":node/category/:id": "onCategoryChange",
   },
 
   config: {
@@ -19,6 +20,32 @@ Ext.define("Demo.view.admin.AdminViewController", {
   },
 
   collapsedCls: "main-nav-collapsed",
+
+  onCategoryChange: function (node, id) {
+    this.setCategoryView(node, id);
+  },
+
+  setCategoryView: function (hashTag, id) {
+    console.log("admin controller: ", hashTag, id);
+    hashTag = (hashTag || "").toLowerCase();
+
+    const me = this;
+    const node = this.setTreeNode(hashTag);
+    const refs = me.getReferences();
+    const mainCard = refs.mainCard;
+    let item = mainCard.child(
+      "component[routeId=" + hashTag + "/category/" + id + "]"
+    );
+
+    if (!item) {
+      item = mainCard.add({
+        xtype: node.get("viewType"),
+        routeId: hashTag + "/category/" + id,
+      });
+    }
+    mainCard.setActiveItem(item);
+    this.redirectTo(hashTag + "/category/" + id);
+  },
 
   onToggleNavigationSize: function () {
     this.setShowNavigation(!this.getShowNavigation());
@@ -28,6 +55,7 @@ Ext.define("Demo.view.admin.AdminViewController", {
     const me = this;
     const refs = me.getReferences();
 
+    // console.log(this.getRoutes());
     me.callParent([view]);
 
     me.nav = refs.navigation;
@@ -49,10 +77,13 @@ Ext.define("Demo.view.admin.AdminViewController", {
   },
 
   onRouteChange: function (id) {
+    // console.log("admin route change", id);
     this.setCurrentView(id);
   },
 
-  setCurrentView: function (hashTag) {
+  setTreeNode: function (hashTag) {
+    // hashTag = hashTag.split("/")[0];
+    console.log("set tree node admin", hashTag);
     hashTag = (hashTag || "").toLowerCase();
     const me = this;
 
@@ -62,6 +93,27 @@ Ext.define("Demo.view.admin.AdminViewController", {
     const node =
       store.findNode("routeId", hashTag) || store.findNode("viewType", hashTag);
     navigationTree.setSelection(node);
+    return node;
+  },
+
+  setCurrentView: function (hashTag) {
+    // hashTag = (hashTag || "").toLowerCase();
+    // const me = this;
+
+    // const navigationTree = me.navigationTree;
+    // const store = navigationTree.getStore();
+
+    // const node =
+    //   store.findNode("routeId", hashTag) || store.findNode("viewType", hashTag);
+    // navigationTree.setSelection(node);
+    // if (hashTag === "articles") {
+    //   console.log(
+    //     this.getView().down("articles").getViewModel().getStore("articles")
+    //   );
+    // }
+
+    const me = this;
+    const node = this.setTreeNode(hashTag);
 
     const refs = me.getReferences();
     const mainCard = refs.mainCard;
@@ -74,6 +126,7 @@ Ext.define("Demo.view.admin.AdminViewController", {
       });
     }
     mainCard.setActiveItem(item);
+    // console.log("mainCard:", mainCard);
   },
 
   toolbarButtonClick: function (btn) {

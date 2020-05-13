@@ -1,21 +1,32 @@
 Ext.define("Demo.view.admin.user.User", {
   extend: "Ext.grid.Grid",
   xtype: "users",
-  requires: ["Ext.grid.column.Column", "Ext.grid.cell.*"],
+  requires: [
+    "Ext.grid.column.Column",
+    "Ext.grid.cell.*",
+    "Ext.grid.rowedit.Plugin",
+  ],
+  controller: "usercontroller",
   viewModel: {
     type: "userviewmodel",
   },
+  plugins: {
+    rowedit: {
+      autoConfirm: false,
+    },
+  },
 
   selectable: "single",
-  defaults: {
-    height: 70,
-  },
 
   bind: {
     store: "{users}",
   },
 
   title: "Users",
+
+  defaults: {
+    height: 70,
+  },
   columns: [
     {
       text: "Avatar",
@@ -30,21 +41,25 @@ Ext.define("Demo.view.admin.user.User", {
       text: "Name",
       dataIndex: "name",
       flex: 1,
+      editable: true,
     },
     {
       text: "Email",
       dataIndex: "email",
       flex: 1,
+      editable: true,
     },
     {
       text: "Password",
       dataIndex: "password",
       flex: 0.5,
+      editable: true,
     },
     {
       text: "role",
       dataIndex: "role",
       flex: 0.5,
+      editable: true,
     },
     {
       text: "Created At",
@@ -52,4 +67,8 @@ Ext.define("Demo.view.admin.user.User", {
       flex: 1,
     },
   ],
+  listeners: {
+    canceledit: "onEditCancelled",
+    validateedit: "onValidateEdit",
+  },
 });

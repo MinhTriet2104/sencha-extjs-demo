@@ -10,7 +10,7 @@ Ext.define("Demo.view.admin.article.Article", {
   scrollable: true,
   tbar: {
     xtype: "dataview",
-    cls: "mt-3 nav-menu ml-3",
+    cls: "mt-3 nav-menu ml-2",
     autoEl: "ul",
 
     layout: "box",
@@ -21,20 +21,20 @@ Ext.define("Demo.view.admin.article.Article", {
 
     itemTpl: `
     <li>
-      <a href="#articles">
+      <a href="#articles/category/{id}">
         {name}
       </a>
     </li>
     `,
 
-    listeners: {
-      itemtap: "handleClickNav",
-    },
+    // listeners: {
+    //   itemtap: "handleClickNav",
+    // },
   },
 
   items: {
     xtype: "dataview",
-    reference: "dataview",
+    reference: "articlesDataview",
     bind: {
       store: "{articles}",
     },

@@ -18,7 +18,18 @@ Ext.define("Demo.view.admin.article.ArticleViewModel", {
       model: "Demo.model.Category",
       storeId: "categories",
       autoLoad: true,
-      sorters: ["name"],
+      // sorters: ["name"],
+      listeners: {
+        load: function (store, records) {
+          store.insert(
+            0,
+            Ext.create("Demo.model.Category", {
+              id: "0",
+              name: "all",
+            })
+          );
+        },
+      },
     },
   },
 });
