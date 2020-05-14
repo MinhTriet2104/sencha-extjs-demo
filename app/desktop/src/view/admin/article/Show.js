@@ -7,4 +7,5 @@ Ext.define("Demo.view.view.article.Show", {
   // bodyPadding: 16,
   width: 640,
   height: 480,
+  scrollable: true,
 });

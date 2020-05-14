@@ -26,9 +26,10 @@
     "build": "npm run clean && cross-env webpack --env.profile=desktop --env.environment=production --env.treeshake=yes"
   },
   "dependencies": {
+    "@sencha/ext": "~7.2.0",
     "@sencha/ext-modern": "~7.2.0",
     "@sencha/ext-modern-theme-material": "~7.2.0",
-    "@sencha/ext": "~7.2.0"
+    "axios": "^0.19.2"
   },
   "devDependencies": {
     "@sencha/ext-webpack-plugin": "~7.2.0",
