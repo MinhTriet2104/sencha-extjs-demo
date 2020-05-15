@@ -32,13 +32,22 @@ Ext.define("Demo.view.admin.article.Article", {
     // },
   },
 
-  items: {
-    xtype: "dataview",
-    reference: "articlesDataview",
-    bind: {
-      store: "{articles}",
+  items: [
+    {
+      xtype: "button",
+      cls: "m-3 mb-1",
+      iconCls: "x-fa fa-plus",
+      text: "New Article",
+
+      handler: "addNewArticle",
     },
-    itemTpl: `
+    {
+      xtype: "dataview",
+      reference: "articlesDataview",
+      bind: {
+        store: "{articles}",
+      },
+      itemTpl: `
     <div class="container mt-3">
       <div class="post post-row">
         <a class="post-img"><img src="{image}" alt="{title}"></a>
@@ -56,8 +65,9 @@ Ext.define("Demo.view.admin.article.Article", {
       </div>
     </div>
     `,
-    listeners: {
-      select: "dataviewSelect",
+      listeners: {
+        select: "dataviewSelect",
+      },
     },
-  },
+  ],
 });

@@ -13,7 +13,7 @@ Ext.define("Demo.model.Category", {
   ],
   proxy: {
     type: "rest",
-    url: "https://5eb51225de5849001638b0a7.mockapi.io/api/category",
+    url: "http://localhost:8080/category",
     reader: {
       type: "json",
     },

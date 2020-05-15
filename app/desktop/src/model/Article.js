@@ -28,18 +28,20 @@ Ext.define("Demo.model.Article", {
     },
     {
       name: "category",
-      mapping: "category",
+      mapping: "category.name",
     },
     {
       name: "author",
-      mapping: "author",
+      mapping: "author.name",
     },
   ],
   proxy: {
     type: "rest",
-    url: "https://5eb51225de5849001638b0a7.mockapi.io/api/article/",
+    url: "http://localhost:8080/article",
+    useDefaultXhrHeader: false,
     reader: {
       type: "json",
+      headers: { Accept: "application/json" },
     },
   },
 });

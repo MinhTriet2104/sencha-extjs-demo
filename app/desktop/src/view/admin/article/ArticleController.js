@@ -16,6 +16,109 @@ Ext.define("Demo.view.admin.article.ArticleController", {
     }
   },
 
+  addNewArticle: function (btn) {
+    const categoriesStore = btn.up().down("dataview").getStore("categories")
+      .data.items;
+    console.log(categoriesStore);
+    const form = Ext.create({
+      xtype: "show",
+
+      items: {
+        xtype: "formpanel",
+
+        items: [
+          {
+            label: "Article Title",
+            name: "title",
+            xtype: "textfield",
+            allowBlank: false,
+            reference: "title",
+          },
+          {
+            label: "Author",
+            name: "author",
+            xtype: "textfield",
+            allowBlank: false,
+          },
+          {
+            label: "Category",
+            name: "category",
+            xtype: "combobox",
+            store: categoriesStore,
+            valueField: "id",
+          },
+          {
+            label: "Content",
+            name: "content",
+            xtype: "textareafield",
+            allowBlank: false,
+            grow: true,
+          },
+        ],
+        buttons: [
+          {
+            text: "Create",
+            cls: "mr-2",
+            handler: async function (btn) {
+              try {
+                const article = await res.data;
+
+                const form = btn.up("formpanel");
+                const formValues = form.getValues();
+
+                const modifiedArticle = {
+                  ...article,
+                  ...formValues,
+                };
+
+                Ext.Msg.show({
+                  title: "Save Change?",
+                  message: "Are you sure you wanna change?",
+                  width: 300,
+                  closable: false,
+                  icon: Ext.Msg.QUESTION,
+                  buttons: [
+                    {
+                      text: "Create",
+                      itemId: "yes",
+                    },
+                    {
+                      text: "Cancel",
+                      itemId: "no",
+                    },
+                  ],
+                  fn: async function (buttonValue, inputText, showConfig) {
+                    if (buttonValue === "yes") {
+                      try {
+                        const updatedArticle = await Demo.axios.put(
+                          "http://localhost:8080/article/" + id,
+                          modifiedArticle
+                        );
+                        Ext.Msg.alert(
+                          "Update Successfully",
+                          `Article: "${updatedArticle.data.title}" Updated Successfully`
+                        );
+                        component.getStore().load();
+                        btn.up("show").close();
+                      } catch (err) {
+                        Ext.Msg.alert("Update Fail", err);
+                      }
+                    } else {
+                      return;
+                    }
+                  },
+                });
+              } catch (err) {
+                Ext.Msg.alert("Update Fail", err);
+              }
+            },
+          },
+        ],
+      },
+    });
+    form.show();
+  },
+
   dataviewSelect: function (component, record) {
     const {
       id,
@@ -78,8 +181,7 @@ Ext.define("Demo.view.admin.article.ArticleController", {
             handler: async function (btn) {
               try {
                 const res = await Demo.axios.get(
-                  "https://5eb51225de5849001638b0a7.mockapi.io/api/article/" +
-                    id
+                  "http://localhost:8080/article/" + id
                 );
                 const article = await res.data;
 
@@ -111,8 +213,7 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                     if (buttonValue === "yes") {
                       try {
                         const updatedArticle = await Demo.axios.put(
-                          "https://5eb51225de5849001638b0a7.mockapi.io/api/article/" +
-                            id,
+                          "http://localhost:8080/article/" + id,
                           modifiedArticle
                         );
                         Ext.Msg.alert(
@@ -161,8 +262,7 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                   try {
                     if (buttonValue === "yes") {
                       const deletedArticle = await Demo.axios.delete(
-                        "https://5eb51225de5849001638b0a7.mockapi.io/api/article/" +
-                          id
+                        "http://localhost:8080/article/" + id
                       );
                       Ext.Msg.alert(
                         "Delete Successfully",
@@ -203,13 +303,13 @@ Ext.define("Demo.view.admin.article.ArticleController", {
     hashTag = (hashTag || "").toLowerCase();
     const store = this.getView().getViewModel().getStore("articles");
     if (id == 0) {
-      store.getProxy().url = `https://5eb51225de5849001638b0a7.mockapi.io/api/article/`;
+      store.getProxy().url = `http://localhost:8080/article`;
       store.load();
       this.redirectTo("articles");
       return;
     }
 
-    store.getProxy().url = `https://5eb51225de5849001638b0a7.mockapi.io/api/article/${id}/`;
+    store.getProxy().url = `http://localhost:8080/article?category=${id}`;
     store.load();
 
     // const me = this;
