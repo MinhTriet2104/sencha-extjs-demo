@@ -55,7 +55,7 @@ Ext.define("Demo.view.admin.article.Article", {
           <div class="post-category">
             <a>{category}</a>
           </div>
-          <h3 class="post-title"><a>Mel ut impetus suscipit tincidunt. Cum id ullum laboramus persequeris.</a></h3>
+          <h3 class="post-title"><a>{title}</a></h3>
           <ul class="post-meta">
             <li><a>{author}</a></li>
             <li>{date:date("F j, Y")}</li>

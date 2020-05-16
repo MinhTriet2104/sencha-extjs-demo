@@ -17,9 +17,13 @@ Ext.define("Demo.view.admin.article.ArticleController", {
   },
 
   addNewArticle: function (btn) {
-    const categoriesStore = btn.up().down("dataview").getStore("categories")
-      .data.items;
-    console.log(categoriesStore);
+    const categoriesStore = btn
+      .up()
+      .getViewModel()
+      .getStore("categories")
+      .data.items.slice(1);
+    const authorsStore = btn.up().getViewModel().getStore("authors").data.items;
+
     const form = Ext.create({
       xtype: "show",
 
@@ -37,15 +41,57 @@ Ext.define("Demo.view.admin.article.ArticleController", {
           {
             label: "Author",
             name: "author",
-            xtype: "textfield",
+            xtype: "combobox",
             allowBlank: false,
+            store: authorsStore,
+            displayField: "name",
+            valueField: "id",
+            editable: false,
           },
           {
             label: "Category",
             name: "category",
             xtype: "combobox",
+            allowBlank: false,
             store: categoriesStore,
+            displayField: "name",
             valueField: "id",
+            editable: false,
+          },
+          {
+            xtype: "container",
+            viewModel: {},
+            items: [
+              {
+                xtype: "filefield",
+                label: "Image",
+                listeners: {
+                  change(field) {
+                    const file = field.el.down("input[type=file]").dom.files[0];
+                    const container = field.up("container");
+                    const viewModel = container.getViewModel();
+                    const reader = new FileReader();
+
+                    reader.onload = (e) =>
+                      viewModel.set("imgData", e.target.result);
+
+                    reader.readAsDataURL(file);
+                  },
+                },
+              },
+              {
+                xtype: "image",
+                flex: 1,
+                cls: "mt-2",
+                height: 400,
+                style: {
+                  border: "1px solid #35baf6",
+                },
+                bind: {
+                  src: "{imgData}",
+                },
+              },
+            ],
           },
           {
             label: "Content",
@@ -58,58 +104,53 @@ Ext.define("Demo.view.admin.article.ArticleController", {
         buttons: [
           {
             text: "Create",
-            cls: "mr-2",
+            // cls: "mr-2",
             handler: async function (btn) {
               try {
-                const article = await res.data;
-
                 const form = btn.up("formpanel");
                 const formValues = form.getValues();
 
-                const modifiedArticle = {
-                  ...article,
-                  ...formValues,
-                };
+                console.log(formValues);
 
-                Ext.Msg.show({
-                  title: "Save Change?",
-                  message: "Are you sure you wanna change?",
-                  width: 300,
-                  closable: false,
-                  icon: Ext.Msg.QUESTION,
-                  buttons: [
-                    {
-                      text: "Create",
-                      itemId: "yes",
-                    },
-                    {
-                      text: "Cancel",
-                      itemId: "no",
-                    },
-                  ],
-                  fn: async function (buttonValue, inputText, showConfig) {
-                    if (buttonValue === "yes") {
-                      try {
-                        const updatedArticle = await Demo.axios.put(
-                          "http://localhost:8080/article/" + id,
-                          modifiedArticle
-                        );
-                        Ext.Msg.alert(
-                          "Update Successfully",
-                          `Article: "${updatedArticle.data.title}" Updated Successfully`
-                        );
-                        component.getStore().load();
-                        btn.up("show").close();
-                      } catch (err) {
-                        Ext.Msg.alert("Update Fail", err);
-                      }
-                    } else {
-                      return;
-                    }
-                  },
-                });
+                // Ext.Msg.show({
+                //   title: "Save Change?",
+                //   message: "Are you sure you wanna change?",
+                //   width: 300,
+                //   closable: false,
+                //   icon: Ext.Msg.QUESTION,
+                //   buttons: [
+                //     {
+                //       text: "Create",
+                //       itemId: "yes",
+                //     },
+                //     {
+                //       text: "Cancel",
+                //       itemId: "no",
+                //     },
+                //   ],
+                //   fn: async function (buttonValue, inputText, showConfig) {
+                //     if (buttonValue === "yes") {
+                //       try {
+                //         const updatedArticle = await Demo.axios.put(
+                //           "http://localhost:8080/article/" + id,
+                //           modifiedArticle
+                //         );
+                //         Ext.Msg.alert(
+                //           "Update Successfully",
+                //           `Article: "${updatedArticle.data.title}" Updated Successfully`
+                //         );
+                //         component.getStore().load();
+                //         btn.up("show").close();
+                //       } catch (err) {
+                //         Ext.Msg.alert("Update Fail", err);
+                //       }
+                //     } else {
+                //       return;
+                //     }
+                //   },
+                // });
               } catch (err) {
-                Ext.Msg.alert("Update Fail", err);
+                Ext.Msg.alert("Create Fail", err);
               }
             },
           },

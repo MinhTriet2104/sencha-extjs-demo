@@ -14,6 +14,7 @@ Ext.define("Demo.view.admin.article.ArticleViewModel", {
         },
       ],
     },
+
     categories: {
       model: "Demo.model.Category",
       storeId: "categories",
@@ -30,6 +31,12 @@ Ext.define("Demo.view.admin.article.ArticleViewModel", {
           );
         },
       },
+    },
+
+    authors: {
+      model: "Demo.model.Author",
+      storeId: "authors",
+      autoLoad: true,
     },
   },
 });
