@@ -17,18 +17,18 @@ Ext.define("Demo.view.admin.article.ArticleController", {
   },
 
   addNewArticle: function (btn) {
-    const categoriesStore = btn
-      .up()
-      .getViewModel()
-      .getStore("categories")
-      .data.items.slice(1);
-    const authorsStore = btn.up().getViewModel().getStore("authors").data.items;
+    const categoriesStore = btn.up().getViewModel().getStore("categories");
+
+    const categoriesStoreItems = categoriesStore.data.items.slice(1);
+    const authorsStoreItems = btn.up().getViewModel().getStore("authors").data
+      .items;
 
     const form = Ext.create({
       xtype: "show",
 
       items: {
         xtype: "formpanel",
+        headers: { "Content-type": "multipart/form-data" },
 
         items: [
           {
@@ -43,7 +43,7 @@ Ext.define("Demo.view.admin.article.ArticleController", {
             name: "author",
             xtype: "combobox",
             allowBlank: false,
-            store: authorsStore,
+            store: authorsStoreItems,
             displayField: "name",
             valueField: "id",
             editable: false,
@@ -53,7 +53,7 @@ Ext.define("Demo.view.admin.article.ArticleController", {
             name: "category",
             xtype: "combobox",
             allowBlank: false,
-            store: categoriesStore,
+            store: categoriesStoreItems,
             displayField: "name",
             valueField: "id",
             editable: false,
@@ -105,50 +105,64 @@ Ext.define("Demo.view.admin.article.ArticleController", {
           {
             text: "Create",
             // cls: "mr-2",
-            handler: async function (btn) {
+            handler: function (btn) {
               try {
                 const form = btn.up("formpanel");
                 const formValues = form.getValues();
 
-                console.log(formValues);
+                const image = form.down("filefield").el.down("input[type=file]")
+                  .dom.files[0];
 
-                // Ext.Msg.show({
-                //   title: "Save Change?",
-                //   message: "Are you sure you wanna change?",
-                //   width: 300,
-                //   closable: false,
-                //   icon: Ext.Msg.QUESTION,
-                //   buttons: [
-                //     {
-                //       text: "Create",
-                //       itemId: "yes",
-                //     },
-                //     {
-                //       text: "Cancel",
-                //       itemId: "no",
-                //     },
-                //   ],
-                //   fn: async function (buttonValue, inputText, showConfig) {
-                //     if (buttonValue === "yes") {
-                //       try {
-                //         const updatedArticle = await Demo.axios.put(
-                //           "http://localhost:8080/article/" + id,
-                //           modifiedArticle
-                //         );
-                //         Ext.Msg.alert(
-                //           "Update Successfully",
-                //           `Article: "${updatedArticle.data.title}" Updated Successfully`
-                //         );
-                //         component.getStore().load();
-                //         btn.up("show").close();
-                //       } catch (err) {
-                //         Ext.Msg.alert("Update Fail", err);
-                //       }
-                //     } else {
-                //       return;
-                //     }
-                //   },
-                // });
+                const article = {
+                  ...formValues,
+                  image: image,
+                };
+
+                console.log(article);
+
+                Ext.Msg.show({
+                  title: "Create Article?",
+                  message: "Are you sure you wanna create?",
+                  width: 300,
+                  closable: false,
+                  icon: Ext.Msg.QUESTION,
+                  buttons: [
+                    {
+                      text: "Create",
+                      itemId: "yes",
+                    },
+                    {
+                      text: "Cancel",
+                      itemId: "no",
+                    },
+                  ],
+                  fn: async function (buttonValue, inputText, showConfig) {
+                    if (buttonValue === "yes") {
+                      try {
+                        const newArticle = await Demo.axios.post(
+                          "http://localhost:8080/article",
+                          article,
+                          {
+                            headers: {
+                              "Content-Type":
+                                "multipart/form-data; charset=UTF-8",
+                            },
+                          }
+                        );
+                        Ext.Msg.alert(
+                          "Create Successfully",
+                          `Article: "${newArticle.data.title}" Created Successfully`
+                        );
+                        categoriesStore.load();
+                        btn.up("show").close();
+                      } catch (err) {
+                        Ext.Msg.alert("Create Fail", err);
+                      }
+                    } else {
+                      return;
+                    }
+                  },
+                });
               } catch (err) {
                 Ext.Msg.alert("Create Fail", err);
               }
@@ -161,6 +175,14 @@ Ext.define("Demo.view.admin.article.ArticleController", {
   },
 
   dataviewSelect: function (component, record) {
+    const categoriesStoreItems = component
+      .up()
+      .getViewModel()
+      .getStore("categories")
+      .data.items.slice(1);
+    const authorsStoreItems = component.up().getViewModel().getStore("authors")
+      .data.items;
+
     const {
       id,
       title,
@@ -171,6 +193,14 @@ Ext.define("Demo.view.admin.article.ArticleController", {
       category,
       author,
     } = record.data;
+
+    const categoryId = categoriesStoreItems.find(
+      (item) => item.data.name === category
+    );
+    const authorId = authorsStoreItems.find(
+      (item) => item.data.name === author
+    );
+
     const form = Ext.create({
       xtype: "show",
       items: {
@@ -188,16 +218,24 @@ Ext.define("Demo.view.admin.article.ArticleController", {
           {
             label: "Author",
             name: "author",
-            xtype: "textfield",
+            xtype: "combobox",
             allowBlank: false,
-            value: author,
+            store: authorsStoreItems,
+            displayField: "name",
+            valueField: "id",
+            editable: false,
+            value: authorId,
           },
           {
             label: "Category",
             name: "category",
-            xtype: "textfield",
+            xtype: "combobox",
             allowBlank: false,
-            value: category,
+            store: categoriesStoreItems,
+            displayField: "name",
+            valueField: "id",
+            editable: false,
+            value: categoryId,
           },
           {
             label: "Date",
