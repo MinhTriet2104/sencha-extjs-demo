@@ -1,7 +1,7 @@
 Ext.define("Demo.view.view.article.Show", {
   extend: "Ext.window.Window",
   xtype: "show",
-  title: "Article Showcase",
+  title: "Form Showcase",
   resizable: true,
   closable: true,
   // bodyPadding: 16,

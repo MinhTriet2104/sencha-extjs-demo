@@ -42,6 +42,14 @@ Ext.define("Demo.view.admin.article.Article", {
       handler: "addNewArticle",
     },
     {
+      xtype: "button",
+      cls: "m-3 mb-1",
+      iconCls: "x-fa fa-plus",
+      text: "New Category",
+
+      handler: "addNewCategory",
+    },
+    {
       xtype: "dataview",
       reference: "articlesDataview",
       bind: {
@@ -50,7 +58,7 @@ Ext.define("Demo.view.admin.article.Article", {
       itemTpl: `
     <div class="container mt-3">
       <div class="post post-row">
-        <a class="post-img"><img src="{image}" alt="{title}"></a>
+        <a class="post-img"><img src="http://localhost:8080/img/{image_id}" alt="{title}"></a>
         <div class="post-body">
           <div class="post-category">
             <a>{category}</a>

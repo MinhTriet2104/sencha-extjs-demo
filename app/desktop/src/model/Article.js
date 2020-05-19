@@ -38,6 +38,8 @@ Ext.define("Demo.model.Article", {
   proxy: {
     type: "rest",
     url: "http://localhost:8080/article",
+    useDefaultXhrHeader: false,
+    cors: true,
     reader: {
       type: "json",
     },
