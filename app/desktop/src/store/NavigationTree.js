@@ -14,7 +14,6 @@ Ext.define("Demo.store.NavigationTree", {
       {
         text: "Dashboard",
         iconCls: "x-fa fa-desktop",
-        rowCls: "nav-tree-badge nav-tree-badge-new",
         viewType: "dashboard",
         routeId: "dashboard", // routeId defaults to viewType
         leaf: true,
@@ -28,8 +27,13 @@ Ext.define("Demo.store.NavigationTree", {
       {
         text: "Users",
         iconCls: "x-fa fa-user",
-        rowCls: "nav-tree-badge nav-tree-badge-hot",
         viewType: "users",
+        leaf: true,
+      },
+      {
+        text: "Search",
+        iconCls: "x-fa fa-search",
+        viewType: "search",
         leaf: true,
       },
     ],

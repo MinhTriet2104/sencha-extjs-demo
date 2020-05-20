@@ -1,0 +1,29 @@
+Ext.define("Demo.view.admin.search.SearchViewController", {
+  extend: "Ext.app.ViewController",
+  alias: "controller.searchviewcontroller",
+
+  searchHandler: async function (btn) {
+    const form = btn.up();
+    const formValues = form.getValues();
+    const viewModel = btn.up("search").getViewModel();
+    // console.log(viewModel);
+    // const res = await Demo.axios.post(
+    //   "http://localhost:8080/article?search=true",
+    //   formValues
+    // );
+
+    // if (res.status === 200) {
+    //   if (res.data) {
+    // viewModel.setStore("articles", res.data);
+    // console.log(res.data);
+    // viewModel.getStore("articles").getData().items = res.data;
+    // console.log(viewModel.getStore("articles"));
+    viewModel.getStore("articles").getProxy().url =
+      "http://localhost:8080/article?search=true&title=" + formValues.title;
+
+    viewModel.getStore("articles").load();
+    // console.log(viewModel.getStore("articles").setProxy().url);
+    //   }
+    // }
+  },
+});

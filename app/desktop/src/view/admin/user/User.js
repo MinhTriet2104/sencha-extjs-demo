@@ -27,6 +27,7 @@ Ext.define("Demo.view.admin.user.User", {
   defaults: {
     height: 70,
   },
+
   columns: [
     {
       text: "Avatar",

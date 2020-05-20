@@ -147,11 +147,28 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                             "content-type": "multipart/form-data",
                           },
                         };
-                        const newArticle = await Demo.axios.post(
+                        const res = await Demo.axios.post(
                           "http://localhost:8080/article",
                           formData,
                           config
                         );
+
+                        if (res.status === 200) {
+                          Ext.Msg.alert(
+                            "Create Successfully",
+                            `Article: "${res.data.title}" Created Successfully`
+                          );
+
+                          if (res.data) {
+                            const store = button
+                              .up()
+                              .getViewModel()
+                              .getStore("articles");
+
+                            store.load();
+                            btn.up("show").close();
+                          }
+                        }
                         // Ext.Ajax.request({
                         //   url: "http://localhost:8080/article",
                         //   method: "POST",
@@ -169,17 +186,6 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                         //     console.log(form, action);
                         //   },
                         // });
-
-                        Ext.Msg.alert(
-                          "Create Successfully",
-                          `Article: "${formValues.title}" Created Successfully`
-                        );
-                        const store = button
-                          .up()
-                          .getViewModel()
-                          .getStore("articles");
-                        store.load();
-                        btn.up("show").close();
                       } catch (err) {
                         Ext.Msg.alert("Create Fail", err);
                       }
@@ -242,24 +248,24 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                   ],
                   fn: async function (buttonValue, inputText, showConfig) {
                     if (buttonValue === "yes") {
-                      Ext.Ajax.request({
-                        url: "http://localhost:8080/category",
-                        method: "POST",
-                        cors: true,
-                        useDefaultXhrHeader: false,
-                        jsonData: formValues,
-                        success: function (res, opts) {
+                      try {
+                        const res = await Demo.axios.post(
+                          "http://localhost:8080/category",
+                          formValues
+                        );
+                        if (res.status === 200) {
                           Ext.Msg.alert(
                             "Create Successfully",
-                            `Category: "${formValues.name}" Created Successfully`
+                            `Category: "${res.data.name}" Created Successfully`
                           );
-                          categoriesViewModel.getStore("categories").load();
-                          btn.up("show").close();
-                        },
-                        failure: function (res, opts) {
-                          Ext.Msg.alert("Create Fail", formValues.name);
-                        },
-                      });
+                          if (res.data) {
+                            categoriesViewModel.getStore("categories").load();
+                            btn.up("show").close();
+                          }
+                        }
+                      } catch (err) {
+                        Ext.Msg.alert("Create Fail", err);
+                      }
                     } else {
                       return;
                     }
@@ -413,8 +419,6 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                   ...formValues,
                 };
 
-                console.log(modifiedArticle);
-
                 let image = form.down("filefield").el.down("input[type=file]")
                   .dom.files[0];
 
@@ -450,17 +454,21 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                             "content-type": "multipart/form-data",
                           },
                         };
-                        const updatedArticle = await Demo.axios.put(
+                        const res = await Demo.axios.put(
                           "http://localhost:8080/article/" + id,
                           formData,
                           config
                         );
-                        component.getStore().load();
-                        Ext.Msg.alert(
-                          "Update Successfully",
-                          `Article Updated Successfully`
-                        );
-                        btn.up("show").close();
+                        if (res.status === 200) {
+                          if (res.data) {
+                            component.getStore().load();
+                            Ext.Msg.alert(
+                              "Update Successfully",
+                              `Article Updated Successfully`
+                            );
+                            btn.up("show").close();
+                          }
+                        }
                       } catch (err) {
                         Ext.Msg.alert("Update Fail", err);
                       }
@@ -502,12 +510,14 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                     Demo.axios
                       .delete("http://localhost:8080/article/" + id)
                       .then((res) => {
-                        component.getStore("articles").load();
-                        Ext.Msg.alert(
-                          "Delete Successfully",
-                          `Article Deleted Successfully`
-                        );
-                        btn.up("dialog").close();
+                        if (res.status === 200) {
+                          component.getStore("articles").load();
+                          Ext.Msg.alert(
+                            "Delete Successfully",
+                            `Article Deleted Successfully`
+                          );
+                          btn.up("dialog").close();
+                        }
                       })
                       .catch((err) => Ext.Msg.alert("Delete Fail", err));
                   } else {
