@@ -26,6 +26,20 @@ Ext.define("Demo.view.admin.search.Search", {
           reference: "title",
         },
         {
+          label: "From Date",
+          name: "fromDate",
+          xtype: "datefield",
+          allowBlank: false,
+          editable: false,
+        },
+        {
+          label: "To Date",
+          name: "toDate",
+          xtype: "datefield",
+          allowBlank: false,
+          editable: false,
+        },
+        {
           xtype: "button",
           text: "Search",
           iconCls: "x-fa fa-search",

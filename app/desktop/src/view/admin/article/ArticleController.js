@@ -154,12 +154,11 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                         );
 
                         if (res.status === 200) {
-                          Ext.Msg.alert(
-                            "Create Successfully",
-                            `Article: "${res.data.title}" Created Successfully`
-                          );
-
                           if (res.data) {
+                            Ext.Msg.alert(
+                              "Create Successfully",
+                              `Article: "${res.data.title}" Created Successfully`
+                            );
                             const store = button
                               .up()
                               .getViewModel()
@@ -254,11 +253,11 @@ Ext.define("Demo.view.admin.article.ArticleController", {
                           formValues
                         );
                         if (res.status === 200) {
-                          Ext.Msg.alert(
-                            "Create Successfully",
-                            `Category: "${res.data.name}" Created Successfully`
-                          );
                           if (res.data) {
+                            Ext.Msg.alert(
+                              "Create Successfully",
+                              `Category: "${res.data.name}" Created Successfully`
+                            );
                             categoriesViewModel.getStore("categories").load();
                             btn.up("show").close();
                           }
@@ -345,13 +344,13 @@ Ext.define("Demo.view.admin.article.ArticleController", {
             editable: false,
             value: categoryId,
           },
-          {
-            label: "Date",
-            name: "date",
-            xtype: "datefield",
-            allowBlank: false,
-            value: new Date(date),
-          },
+          // {
+          //   label: "Date",
+          //   name: "date",
+          //   xtype: "datefield",
+          //   allowBlank: false,
+          //   value: new Date(date),
+          // },
           {
             xtype: "container",
             viewModel: {
