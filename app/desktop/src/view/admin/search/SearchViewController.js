@@ -25,9 +25,7 @@ Ext.define("Demo.view.admin.search.SearchViewController", {
       const toDateMonth = toDate.getMonth() + 1;
       const toDateYear = toDate.getFullYear();
 
-      query += `&from=${toDateYear}-${toDateMonth}-${toDateDay}`;
-
-      query += `&to=${new Datetime(formValues.toDate)}`;
+      query += `&to=${toDateYear}-${toDateMonth}-${toDateDay}`;
     }
 
     // console.log(viewModel);
