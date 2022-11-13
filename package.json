@@ -46,7 +46,7 @@
     "portfinder": "^1.0.21",
     "replace": "^1.1.1",
     "webpack": "~4.39.2",
-    "webpack-cli": "~3.3.6",
+    "webpack-cli": "~3.3.12",
     "webpack-dev-server": "^3.11.0"
   }
 }
